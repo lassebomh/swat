@@ -1,0 +1,25 @@
+{
+  "name": "watserp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx main.ts",
+    "tokenizer": "tsx tokenizer.ts",
+    "variable": "tsx parse/variable.ts",
+    "function": "tsx parse/function.ts",
+    "expressions": "tsx parse/expressions.ts",
+    "module": "tsx parse/module.ts",
+    "test": "tsx test.ts",
+    "wasm": "tsx wat/compile.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "@wasmer/sdk": "^0.6.0",
+    "tsx": "^4.7.2",
+    "wabt": "^1.0.32",
+    "watr": "^2.2.5"
+  }
+}

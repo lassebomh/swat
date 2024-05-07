@@ -1,0 +1,24 @@
+
+import {
+    console.log(i32 a, i32 b) i32,
+}
+
+import console {
+    log(i32 a, i32 b) i32,
+}
+
+import {
+    console {
+        log(i32 a, i32 b) i32,
+    }
+}
+
+
+i32 MAIN(i32 a, i32 b) {
+    return a + b
+}
+
+var a = i32
+
+
+main.0
