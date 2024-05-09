@@ -4,7 +4,7 @@ import { inspect as inspectUtil } from "util";
 const inspect = (obj: any) => console.log(inspectUtil(obj, false, null, true));
 
 export abstract class Token<T extends Token<T, V> = any, V = any> {
-  constructor(public value: V) {}
+  constructor(public value: V, public start: number, public end: number) {}
 }
 
 const delimiterValues = ["(", ")", ";", ".", "{", "}"] as const;
@@ -95,7 +95,9 @@ export class Lexer {
         // } else if (currentChar === '"' || currentChar === "'") {
         //   tokens.push(this.tokenizeString());
       } else if (this.isDelimiter(currentChar)) {
-        tokens.push(new Delimiter(currentChar));
+        tokens.push(
+          new Delimiter(currentChar, this.currentPos, this.currentPos + 1)
+        );
         this.consume();
       } else {
         // Unknown character
@@ -128,32 +130,36 @@ export class Lexer {
 
   private tokenizeNumber(): Number {
     let s = "";
+    let start = this.currentPos;
     while (this.isDigit(this.peek())) {
       s += this.consume();
     }
-    return new Number(s);
+    return new Number(s, start, this.currentPos);
   }
 
   private tokenizeOperator(): Operator {
     let s = "";
+    let start = this.currentPos;
     while (this.isOperator(this.peek())) {
       s += this.consume();
     }
-    return new Operator(s);
+    return new Operator(s, start, this.currentPos);
   }
 
   private tokenizeIdentifier(): Identifier | Keyword | Function {
     let id = "";
+    let start = this.currentPos;
+
     while (this.isLetter(this.peek()) || this.isDigit(this.peek())) {
       id += this.consume();
     }
 
     if (keywordValues.indexOf(<any>id) !== -1) {
-      return new Keyword(id as KeywordValue);
+      return new Keyword(id as KeywordValue, start, this.currentPos);
     } else if (id.toUpperCase() == id) {
-      return new Function(id);
+      return new Function(id, start, this.currentPos);
     } else {
-      return new Identifier(id);
+      return new Identifier(id, start, this.currentPos);
     }
   }
 

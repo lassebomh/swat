@@ -10,12 +10,55 @@ export func MAIN(i32 a, i32 b) i32 {
 }
 `;
 
+/*
+
+continue
+break
+yield
+return
+
+FOO = block() : () -> () {
+
+}
+
+
+x = 0
+i = 0
+
+-> (next) {
+  next = ++i < 50;
+  x += 2;
+}
+
+
+
+
+
+*/
+
 async function main() {
-  let module = parseModule(new Lexer(code).tokenize());
+  // let tokens = new Lexer(code).tokenize();
+  // inspect(tokens);
 
-  inspect(module);
+  // let module = parseModule(tokens);
+  // inspect(module);
 
-  let wat = compileWat(module);
+  // let wat = compileWat(module);
+
+  const wat = `
+    (module
+      (func $SKIP
+        br $MAIN
+      )
+      (func $MAIN (param $a i32) (result i32) (result i32)
+        (block $MAIN
+          call $SKIP
+          i32.const 100
+        )
+      )
+      (export "MAIN" (func $MAIN))
+    )
+  `;
 
   log(formatWat(wat));
 
@@ -26,7 +69,7 @@ async function main() {
     },
   });
 
-  log(exports.MAIN(5, 8));
+  log(exports.MAIN(1));
 }
 
 main();
